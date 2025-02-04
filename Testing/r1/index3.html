@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Magic 💖</title>
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #ff8e8e;
+            --glow: 0 0 25px rgba(255,107,107,0.5);
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(-45deg, #ff6b6b, #ff8e8e, #ff6b6b, #ff8e8e);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite, glowPulse 4s ease infinite;
+            font-family: 'Dancing Script', cursive;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: var(--glow); }
+            50% { box-shadow: 0 0 40px rgba(255,107,107,0.8); }
+        }
+
+        .heart-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 80px;
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            transform: scale(0);
+            animation: boxPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            min-width: 600px;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes boxPop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 3.5em;
+            margin: 0 0 15px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .choice-text {
+            color: #ff6b6b;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            position: relative;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 20px 40px;
+            font-size: 1.8em;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            transform-origin: center;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255,107,107,0.4);
+            z-index: 2;
+            border: 3px solid #ff4757;
+            animation: pulse 2s infinite;
+        }
+
+        #noBtn {
+            background: #f8f8f8;
+            color: #666;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1) rotate(-3deg);
+            box-shadow: 0 12px 30px rgba(255,107,107,0.6);
+        }
+
+        .whatsapp-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 0 40px rgba(255,107,107,0.3);
+            z-index: 999;
+            animation: modalGlow 2s ease infinite;
+        }
+
+        @keyframes modalGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,107,107,0.3); }
+            50% { box-shadow: 0 0 50px rgba(255,107,107,0.5); }
+        }
+
+        .number-input {
+            padding: 15px 25px;
+            font-size: 1.4em;
+            border: 2px solid #ff6b6b;
+            border-radius: 30px;
+            width: 300px;
+            margin: 20px 0;
+            font-family: 'Dancing Script', cursive;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .number-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(255,107,107,0.3);
+        }
+
+        .generate-btn {
+            padding: 15px 30px;
+            font-size: 1.4em;
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Dancing Script', cursive;
+            animation: buttonFloat 3s ease infinite;
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 28px;
+            animation: float 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .message {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 25px 50px;
+            border-radius: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: none;
+            font-size: 1.5em;
+            color: #ff6b6b;
+            animation: messageSlide 0.5s ease-out;
+            z-index: 999;
+        }
+
+        @keyframes messageSlide {
+            0% { top: -100px; }
+            100% { top: 30px; }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            z-index: 998;
+        }
+
+        @media (max-width: 600px) {
+            .heart-box {
+                min-width: 90%;
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .btn {
+                font-size: 1.3em;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="heart-box">
+        <h1>Be My Valentine? 💘</h1>
+        <p class="choice-text">The choice is completely yours...</p>
+        <div class="buttons">
+            <button class="btn" id="yesBtn">Absolutely Yes! 🌹</button>
+            <button class="btn" id="noBtn">Maybe Later</button>
+        </div>
+    </div>
+
+    <div class="message" id="message">I know you want to say Yes! 😉</div>
+
+    <div class="whatsapp-modal" id="whatsappModal">
+        <h2 style="color: #ff6b6b; margin:0 0 20px;">Send Your Love 💌</h2>
+        <input type="tel" class="number-input" placeholder="Enter WhatsApp number 🌸" 
+            pattern="[0-9+]{10,15}" required>
+        <button class="generate-btn" onclick="generateWhatsAppLink()">Create Magic Link ✨</button>
+        <div class="error-msg" style="color:#ff4757; display:none; margin-top:10px;">
+            Please enter valid number with country code!
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const message = document.getElementById('message');
+        const heartsContainer = document.getElementById('hearts');
+        const overlay = document.getElementById('overlay');
+        const whatsappModal = document.getElementById('whatsappModal');
+        let moveCount = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heartsContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        function moveNoButton() {
+            const boxRect = document.querySelector('.heart-box').getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            const maxX = window.innerWidth - btnRect.width - 50;
+            const maxY = window.innerHeight - btnRect.height - 50;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+            moveCount++;
+            
+            if(moveCount === 3) {
+                message.style.display = 'block';
+                setTimeout(() => message.style.display = 'none', 2000);
+            }
+        }
+
+        // Initial position for No button
+        moveNoButton();
+        
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('touchstart', moveNoButton);
+
+        yesBtn.addEventListener('click', () => {
+            document.querySelector('.heart-box').style.display = 'none';
+            overlay.style.display = 'block';
+            whatsappModal.style.display = 'block';
+            setInterval(createHeart, 150);
+        });
+
+        function generateWhatsAppLink() {
+            const numberInput = document.querySelector('.number-input');
+            const errorMsg = document.querySelector('.error-msg');
+            const number = numberInput.value.replace(/[^\d+]/g, '');
+
+            if (number.length < 10 || !number.startsWith('+')) {
+                errorMsg.style.display = 'block';
+                numberInput.style.borderColor = '#ff4757';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                    numberInput.style.borderColor = '#ff6b6b';
+                }, 2000);
+                return;
+            }
+
+            const message = "You+are+my+special+Valentine!+💖+Let's+make+beautiful+moments+together!+🌸";
+            const whatsappUrl = `https://wa.me/${number}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Close modal when clicking outside
+        overlay.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            whatsappModal.style.display = 'none';
+            document.querySelector('.heart-box').style.display = 'block';
+        });
+
+        // Initial floating hearts
+        setInterval(createHeart, 800);
+    </script>
+</body>
+</html>
