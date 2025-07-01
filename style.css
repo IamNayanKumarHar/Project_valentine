@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valentine's Surprise 💖</title>
-    <style>
-      /* ... (keep previous styles) ... */
-
-      body {
+body {
         margin: 0;
         height: 100vh;
         display: flex;
@@ -170,9 +161,14 @@
 
       @media (max-width: 600px) {
         .heart-box {
+          box-sizing: border-box; /* Include padding in width calculations */
+          overflow: hidden; /* Prevent button overflow */
+          position: relative; /* Ensure button stays within container */
+        }
+        /* .heart-box {
           min-width: 90%;
           padding: 30px;
-        }
+        } */
 
         h1 {
           font-size: 2.5em;
@@ -247,6 +243,15 @@
         /* Keep existing styles */
       }
 
+      .developer-footer {
+        transition: opacity 0.5s ease;
+        opacity: 0;
+      }
+
+      .developer-footer.visible {
+        opacity: 1;
+      }
+
       .footer-content {
         max-width: 1200px;
         margin: 0 auto;
@@ -289,152 +294,3 @@
           padding: 5px 0;
         }
       }
-    </style>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <!-- ... (keep previous body content) ... -->
-
-    <div class="hearts" id="hearts"></div>
-
-    <div class="heart-box">
-      <h1>Be My Valentine? 💘</h1>
-      <h2>The choice is completely yours</h2>
-      <div class="buttons">
-        <button class="btn" id="yesBtn">Absolutely Yes! 🌹</button>
-        <button class="btn" id="noBtn">Sorry, No</button>
-      </div>
-    </div>
-
-    <div class="message" id="message">I know you want to say Yes! 😉</div>
-
-    <footer class="developer-footer">
-      <div class="footer-content">
-        <span>Created with 💖 by [Your Name]</span>
-        <div class="footer-links">
-          <a href="[Your Portfolio URL]" target="_blank">Portfolio</a>
-          <a href="[Your GitHub URL]" target="_blank">GitHub</a>
-          <a href="mailto:[Your Email]">Contact</a>
-        </div>
-        <p class="copyright">&copy; 2024 All rights reserved</p>
-      </div>
-    </footer>
-
-    <script>
-      // ... (keep previous JavaScript) ...
-      const yesBtn = document.getElementById("yesBtn");
-      const noBtn = document.getElementById("noBtn");
-      const message = document.getElementById("message");
-      const heartsContainer = document.getElementById("hearts");
-      let moveCount = 0;
-
-      function createHeart() {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "%";
-        heart.style.animationDelay = Math.random() * 2 + "s";
-        heartsContainer.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }
-
-      function moveNoButton() {
-        const boxRect = document
-          .querySelector(".heart-box")
-          .getBoundingClientRect();
-        const btnRect = noBtn.getBoundingClientRect();
-
-        const maxX = boxRect.width - btnRect.width;
-        const maxY = boxRect.height - btnRect.height;
-
-        const newX = Math.random() * maxX;
-        const newY = Math.random() * maxY;
-
-        noBtn.style.left = newX + "px";
-        noBtn.style.top = newY + "px";
-        moveCount++;
-
-        if (moveCount === 3) {
-          message.style.display = "block";
-          setTimeout(() => (message.style.display = "none"), 2000);
-        }
-      }
-
-      // Initial position for No button
-      noBtn.style.left = "50%";
-      noBtn.style.top = "50%";
-
-      noBtn.addEventListener("mouseenter", moveNoButton);
-      noBtn.addEventListener("touchstart", moveNoButton);
-
-      yesBtn.addEventListener("click", () => {
-        document.querySelector(".heart-box").innerHTML = `
-                <h1>I knew it 🎉</h1>
-                <p style="font-size:1.8em; color:#ff6b6b; margin-top:20px;">
-                    You've just made my day!<br>
-                    Let's make it magical! ✨
-                </p>
-            `;
-        const heartsInterval = setInterval(createHeart, 150);
-        document.querySelector(".heart-box").style.transform = "scale(1.1)";
-        setTimeout(() => {
-          document.querySelector(".heart-box").style.transform = "scale(1)";
-        }, 500);
-
-        // Stop existing hearts animation
-        clearInterval(heartsInterval);
-      });
-
-      // Initial floating hearts
-      setInterval(createHeart, 800);
-
-      yesBtn.addEventListener("click", () => {
-        document.querySelector(".heart-box").innerHTML = `
-                <h1>I knew it 🎉</h1>
-                <p style="font-size:1.8em; color:#ff6b6b; margin-top:20px;">
-                    You've just made my day!<br>
-                    Let's make it magical! ✨
-                </p>
-                <div class="whatsapp-section">
-                    <input type="tel" class="number-input" placeholder="Enter WhatsApp number 🌸" 
-                        pattern="[0-9+]{10,15}" required>
-                    <button class="generate-btn" onclick="generateWhatsAppLink()">Send Love 💌</button>
-                    <div class="error-msg">Please enter a valid number with country code!</div>
-                </div>
-            `;
-        document.querySelector(".whatsapp-section").style.display = "block";
-        const heartsInterval = setInterval(createHeart, 150);
-        document.querySelector(".heart-box").style.transform = "scale(1.1)";
-        setTimeout(() => {
-          document.querySelector(".heart-box").style.transform = "scale(1)";
-        }, 500);
-      });
-
-      function generateWhatsAppLink() {
-        const numberInput = document.querySelector(".number-input");
-        const errorMsg = document.querySelector(".error-msg");
-        const number = numberInput.value.replace(/[^\d+]/g, "");
-
-        if (number.length < 10 || !number.startsWith("+")) {
-          errorMsg.style.display = "block";
-          numberInput.style.borderColor = "#ff4757";
-          setTimeout(() => {
-            errorMsg.style.display = "none";
-            numberInput.style.borderColor = "#ff6b6b";
-          }, 2000);
-          return;
-        }
-
-        const message =
-          "You+are+my+special+Valentine!+💖+Let's+make+beautiful+moments+together!+🌸";
-        const whatsappUrl = `https://wa.me/${number}?text=${message}`;
-        window.open(whatsappUrl, "_blank");
-      }
-
-      // ... (rest of the previous JavaScript) ...
-    </script>
-  </body>
-</html>
