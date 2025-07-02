@@ -64,6 +64,11 @@ h2 {
   min-height: 100px;
 }
 
+.content {
+  height: 100%;
+  width: 100%;
+}
+
 .btn {
   padding: 20px 40px;
   font-size: 1.8em;
@@ -170,17 +175,9 @@ h2 {
 @media (max-width: 600px) {
   .heart-box {
     box-sizing: border-box;
-    /* Include padding in width calculations */
     overflow: hidden;
-    /* Prevent button overflow */
     position: relative;
-    /* Ensure button stays within container */
   }
-
-  /* .heart-box {
-          min-width: 90%;
-          padding: 30px;
-        } */
 
   h1 {
     font-size: 2.5em;
@@ -250,8 +247,6 @@ h2 {
   box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
 
   display: none;
-  /* Hide by default */
-  /* Keep existing styles */
 }
 
 .developer-footer {
