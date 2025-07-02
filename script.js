@@ -38,6 +38,27 @@ noBtn.addEventListener("mouseenter", () => {
   }
 });
 
+noBtn.addEventListener("click", () => {
+  const boxRect = document.querySelector(".heart-box").getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  const maxX = boxRect.width - btnRect.width;
+  const maxY = boxRect.height - btnRect.height;
+
+  const newX = (Math.random() * maxX) / 10;
+  const newY = (Math.random() * maxY) / 10;
+
+  noBtn.style.left = newX + "%";
+  noBtn.style.top = newY + "%";
+  moveCount++;
+
+  if (moveCount === 3) {
+    message.style.display = "block";
+    setTimeout(() => (message.style.display = "none"), 2000);
+    moveCount = 0;
+  }
+});
+
 yesBtn.addEventListener("click", () => {
   document.querySelector(".heart-box").innerHTML = `
                 <h1>I knew it 🎉</h1>
